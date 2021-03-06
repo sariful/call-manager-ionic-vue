@@ -9,6 +9,5 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {},
-  "linuxAndroidStudioPath": "/home/sariful/Downloads/android-studio-ide-201.7042882-linux/android-studio/bin/studio.sh"
+  "cordova": {}
 }
