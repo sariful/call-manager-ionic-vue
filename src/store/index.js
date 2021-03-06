@@ -61,6 +61,16 @@ const store = createStore({
             return data;
         },
 
+        async getCallLogPermission(state) {
+            const isHavePermission = await CallLog.hasReadPermission();
+            if (!isHavePermission) {
+                const readPermission = await CallLog.requestReadPermission();
+                if (readPermission) {
+                    state.dispatch("setLast7DaysCalls");
+                }
+            }
+        },
+
         /**
          * 
          * get user details from jwt_token decrypt from backend
