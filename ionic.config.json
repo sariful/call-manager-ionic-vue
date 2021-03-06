@@ -1,0 +1,7 @@
+{
+  "name": "ionic-files",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
