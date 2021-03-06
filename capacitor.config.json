@@ -1,6 +1,6 @@
 {
   "appId": "com.zubizi.callManagerVue",
-  "appName": "ionic-files",
+  "appName": "Call Manager",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",

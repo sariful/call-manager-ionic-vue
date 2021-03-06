@@ -22,8 +22,9 @@ export default {
       return last7DaysCalls;
     }
   },
-  created() {
-    this.$store.dispatch("setLast7DaysCalls");
+  async created() {
+    const result = await this.$store.dispatch("setLast7DaysCalls");
+    console.log(result);
   }
 };
 </script>
