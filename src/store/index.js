@@ -7,6 +7,7 @@ import {
     CallLog
 } from "@ionic-native/call-log";
 
+
 import moment from "moment";
 import axios from "axios";
 
@@ -18,7 +19,7 @@ const store = createStore({
             isLoading: false,
             themeOption: "dark",
             last7DaysCalls: [],
-            callFilters: []
+            callFilters: [],
         };
     },
     mutations: {
@@ -50,25 +51,52 @@ const store = createStore({
         },
 
         async setLast7DaysCalls(state) {
-            const data = await CallLog.getCallLog([{
-                "name": "date",
-                "value": moment().subtract(7, 'd'),
-                "operator": ">="
-            }]);
+            const callLogPermission = await state.getters.getCallLogPermission;
 
-            state.commit("setLast7DaysCalls", data);
-            console.log({data});
-            return data;
-        },
+            function getLastNDays(the_days = 7) {
+                var result = [];
+                for (var i = 0; i < the_days; i++) {
+                    var d = new Date();
+                    d.setDate(d.getDate() - i);
+                    result.push(moment(d).format('YYYY-MM-DD'));
+                }
+                return result.reverse();
+            }
+            
+            function getCallByDay(the_day) {
+                console.log("get call by day");
+                return new Promise(function (resolve) {
+                    var filters = [{
+                            "name": "date",
+                            "value": moment(the_day).format('x'),
+                            "operator": ">="
+                        },
+                        {
+                            "name": "date",
+                            "value": moment(the_day).add(1, 'days').format('x'),
+                            "operator": "<="
+                        }
+                    ];
+                    CallLog.getCallLog(filters, function (call_data) {
+                        resolve(call_data);
+                    }, function (error) {
+                        resolve(error);
+                    });
+                });
+            }
 
-        async getCallLogPermission(state) {
-            const isHavePermission = await CallLog.hasReadPermission();
-            if (!isHavePermission) {
-                const readPermission = await CallLog.requestReadPermission();
-                if (readPermission) {
-                    state.dispatch("setLast7DaysCalls");
+
+            const days = getLastNDays(7);
+            const result = [];
+            if (callLogPermission) {
+                for (const day of days) {
+                    const day_result = await getCallByDay(day);
+                    result.push(day_result);
                 }
             }
+            state.commit("setLast7DaysCalls", result);
+
+            return result;
         },
 
         /**
@@ -106,6 +134,37 @@ const store = createStore({
         getUserDetails(state) {
             return state.userDetails;
         },
+        getLast7DaysCalls(state) {
+            return state.last7DaysCalls;
+        },
+        getCallLogPermission() {
+            return new Promise(function (resolve) {
+                CallLog.hasReadPermission(function (status) {
+                    if (status) {
+                        resolve({
+                            status: true
+                        });
+                    } else {
+                        CallLog.requestReadPermission(function (result) {
+                            resolve({
+                                status: true,
+                                debug: result
+                            });
+                        }, function (err) {
+                            resolve({
+                                status: false,
+                                debug: err
+                            });
+                        });
+                    }
+                }, function (err) {
+                    resolve({
+                        status: false,
+                        debug: err
+                    });
+                });
+            });
+        }
     },
 });
 
