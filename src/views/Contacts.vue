@@ -18,7 +18,6 @@ export default {
   computed: {
     last7DaysCalls() {
       const last7DaysCalls = this.$store.getters.getLast7DaysCalls;
-      console.log({last7DaysCalls});
       return last7DaysCalls;
     }
   },
