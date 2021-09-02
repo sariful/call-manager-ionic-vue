@@ -16,5 +16,8 @@ export default {
     },
     setContact(state, contact_list) {
         state.contacts = contact_list;
+    },
+    setCallLogs(state, callLogs) {
+        state.callLogs = callLogs;
     }
 };

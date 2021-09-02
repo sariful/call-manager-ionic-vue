@@ -113,9 +113,36 @@ export default {
         function onErrorContact(error) {
             console.log(error);
         }
-        
-        navigator.contacts.find(fields, onSuccessContact, onErrorContact, options);
+
+        if (navigator.contacts) {
+            navigator.contacts.find(fields, onSuccessContact, onErrorContact, options);
+        }
 
         return {};
+    },
+
+    fetchCallLogs({ commit }, { start_date, end_date }) {
+        return new Promise(function (resolve) {
+            console.log({ start_date, end_date });
+
+            var filters = [{
+                "name": "date",
+                "value": moment(end_date).format('x'),
+                "operator": ">="
+            },
+            {
+                "name": "date",
+                "value": moment(start_date).add(1, 'days').format('x'),
+                "operator": "<="
+            }
+            ];
+            CallLog.getCallLog(filters, function (callLogs) {
+                console.log(callLogs, "actions");
+                commit("setCallLogs", callLogs);
+                resolve(callLogs);
+            }, function (error) {
+                resolve(error);
+            });
+        });
     }
 };

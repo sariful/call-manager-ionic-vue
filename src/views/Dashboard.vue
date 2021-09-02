@@ -24,7 +24,7 @@ import {
 } from "@ionic/vue";
 
 export default {
-  name: "Home",
+  name: "Dashboard",
   components: {
     IonContent,
     IonCard,

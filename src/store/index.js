@@ -13,7 +13,8 @@ const store = createStore({
             themeOption: "dark",
             last7DaysCalls: {},
             callFilters: [],
-            contacts: []
+            contacts: [],
+            callLogs: [],
         };
     },
     mutations,

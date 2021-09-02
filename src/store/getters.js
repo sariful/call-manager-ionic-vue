@@ -19,6 +19,9 @@ export default {
     getContacts({ contacts }) {
         return contacts.sort((a, b) => a.displayName > b.displayName ? 1 : -1);
     },
+    getCallLogs({ callLogs }) {
+        return callLogs;
+    },
     getCallLogPermission() {
         return new Promise(function (resolve) {
             try {

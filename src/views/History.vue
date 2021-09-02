@@ -1,30 +1,44 @@
 <template>
-  <base-layout page-title="Home">
+  <base-layout page-title="History">
     <ion-content :fullscreen="true">
-      <h1>History</h1>
-      <pre>Last 7days: {{last7DaysCalls}}</pre>
+      <ion-list>
+        <ion-item v-for="singleLog in callLogs" :key="singleLog">
+          <ion-avatar slot="start">
+            <img src="/assets/img/user.png" />
+          </ion-avatar>
+          <ion-label>
+            <h2>{{singleLog.name}}</h2>
+            <h3>{{singleLog.number}}</h3>
+            <p>Type: {{singleLog.type}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </ion-content>
   </base-layout>
 </template>
 
 <script>
 import { IonContent } from "@ionic/vue";
+import moment from "moment";
 
 export default {
-  name: "Home",
+  name: "History",
   components: {
     IonContent,
   },
   computed: {
-    last7DaysCalls() {
-      const last7DaysCalls = this.$store.getters.getLast7DaysCalls;
-      return last7DaysCalls;
-    }
+    callLogs() {
+      const callLogs = this.$store.getters.getCallLogs;
+      return callLogs;
+    },
   },
   async created() {
     // this.$store.dispatch("getCallLogPermission");
-    this.$store.dispatch("setLast7DaysCalls");
+    this.$store.dispatch("fetchCallLogs", {
+      start_date: moment().format("YYYY-MM-DD"),
+      end_date: moment().subtract(7, "d").format("YYYY-MM-DD"),
+    });
     // console.log(result);
-  }
+  },
 };
 </script>
