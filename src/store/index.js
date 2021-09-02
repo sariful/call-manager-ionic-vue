@@ -2,6 +2,8 @@ import { createStore } from "vuex";
 
 import { CallLog } from "@ionic-native/call-log";
 
+import mixins from "../mixins";
+
 import moment from "moment";
 
 import axios from "axios";
@@ -47,19 +49,10 @@ const store = createStore({
 
         async setLast7DaysCalls(state) {
 
+            const days = mixins.getLastNDays(7);
+
 
             const callLogPermission = await state.getters.getCallLogPermission;
-            console.log("hello");
-
-            function getLastNDays(the_days = 7) {
-                var result = [];
-                for (var i = 0; i < the_days; i++) {
-                    var d = new Date();
-                    d.setDate(d.getDate() - i);
-                    result.push(moment(d).format('YYYY-MM-DD'));
-                }
-                return result.reverse();
-            }
 
             function getCallByDay(the_day) {
                 return new Promise(function (resolve) {
@@ -94,7 +87,6 @@ const store = createStore({
                 all_datas: [],
             };
 
-            const days = getLastNDays(7);
 
 
             if (callLogPermission) {

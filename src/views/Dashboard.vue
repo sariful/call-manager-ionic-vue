@@ -45,8 +45,6 @@ export default {
     },
   },
   async created() {
-    const days = this.getLastNDays();
-    console.log(days);
     this.$store.dispatch("setLast7DaysCalls");
   },
   methods: {
