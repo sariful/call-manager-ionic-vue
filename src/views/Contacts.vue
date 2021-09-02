@@ -2,7 +2,7 @@
   <base-layout page-title="Home">
     <ion-content :fullscreen="true">
       <h1>Contacts</h1>
-      <pre>Last 7days: {{last7DaysCalls}}</pre>
+      <pre>Last 7days: {{contacts}}</pre>
     </ion-content>
   </base-layout>
 </template>
@@ -16,15 +16,13 @@ export default {
     IonContent,
   },
   computed: {
-    last7DaysCalls() {
-      const last7DaysCalls = this.$store.getters.getLast7DaysCalls;
-      return last7DaysCalls;
+    contacts() {
+      const contacts = this.$store.getters.getcontacts;
+      return contacts;
     }
   },
   async created() {
-    // this.$store.dispatch("getCallLogPermission");
-    this.$store.dispatch("setLast7DaysCalls");
-    // console.log(result);
+    this.$store.dispatch("fetchContacts");
   }
 };
 </script>
