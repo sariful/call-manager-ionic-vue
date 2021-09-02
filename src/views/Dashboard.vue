@@ -1,22 +1,36 @@
 <template>
   <base-layout page-title="Home">
     <ion-content :fullscreen="true">
-      <h1>Hello</h1>
-      <canvas id="planet-chart" width="1200" height="800"></canvas>
-      <pre>Last 7days: {{ last7DaysCalls }}</pre>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Weekly Calls Report</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <canvas id="planet-chart" width="600" height="400"></canvas>
+        </ion-card-content>
+      </ion-card>
     </ion-content>
   </base-layout>
 </template>
 
 <script>
 import Chart from "chart.js";
-import moment from "moment";
-import { IonContent } from "@ionic/vue";
+import {
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+} from "@ionic/vue";
 
 export default {
   name: "Home",
   components: {
     IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardContent,
+    IonCardTitle,
   },
   computed: {
     last7DaysCalls() {
@@ -28,9 +42,11 @@ export default {
   watch: {
     last7DaysCalls(newVal) {
       this.renderChart(newVal);
-    }
+    },
   },
   async created() {
+    const days = this.getLastNDays();
+    console.log(days);
     this.$store.dispatch("setLast7DaysCalls");
   },
   methods: {
@@ -83,10 +99,10 @@ export default {
               bottom: 0,
             },
           },
-					tooltips: {
-						mode: 'index',
-						intersect: true
-					},
+          tooltips: {
+            mode: "index",
+            intersect: true,
+          },
           elements: {
             line: {
               tension: 0.25,
@@ -118,21 +134,6 @@ export default {
           },
         },
       });
-    },
-    getLastNDays() {
-      let days;
-      if (arguments.length > 0) {
-        days = arguments[0];
-      } else {
-        days = 7;
-      }
-      var result = [];
-      for (var i = 0; i < days; i++) {
-        var d = new Date();
-        d.setDate(d.getDate() - i);
-        result.push(moment(d).format("YYYY-MM-DD"));
-      }
-      return result;
     },
   },
 };

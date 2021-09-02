@@ -11,7 +11,6 @@
 import Menu from "./components/Menu";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/vue";
 import axios from "axios";
-// import { defineComponent } from 'vue';
 
 export default {
   name: "App",
@@ -25,9 +24,6 @@ export default {
     return {};
   },
   async mounted() {
-    // this.$store.dispatch("setUserDetails");
-    // this.$store.dispatch("setCartContents");
-    // this.$store.dispatch("setProducts");
     this.$store.dispatch("setThemeOption", localStorage.themeOption);
     return {};
   },

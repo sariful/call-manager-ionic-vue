@@ -19,7 +19,7 @@
             detail="false"
             lines="none"
             class="hydrated"
-            router-link="/call-history"
+            router-link="/history"
           >
             <ion-icon :icon="layersOutline" slot="start"></ion-icon>
             <ion-label>Call History</ion-label>

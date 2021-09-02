@@ -94,7 +94,7 @@ const store = createStore({
                 all_datas: [],
             };
 
-            const days = getLastNDays(7).reverse();
+            const days = getLastNDays(7);
 
 
             if (callLogPermission) {

@@ -5,6 +5,11 @@ import App from './App.vue';
 import BaseLayout from "./components/base/BaseLayout";
 import router from './router';
 import store from "./store";
+import mixin from "./mixins";
+
+// import moment from "moment";
+// import { defineComponent } from 'vue';
+
 
 import {
   IonicVue
@@ -33,6 +38,12 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router)
   .use(store);
+
+
+
+app.mixin({
+  methods: { ...mixin }
+});
 
 
 app.component("base-layout", BaseLayout);
