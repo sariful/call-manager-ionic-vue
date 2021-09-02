@@ -17,7 +17,7 @@ export default {
         return last7DaysCalls;
     },
     getContacts({ contacts }) {
-        return contacts;
+        return contacts.sort((a, b) => a.displayName > b.displayName ? 1 : -1);
     },
     getCallLogPermission() {
         return new Promise(function (resolve) {

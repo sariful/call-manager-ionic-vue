@@ -5,28 +5,28 @@ import { CallLog } from "@ionic-native/call-log";
 
 
 import moment from "moment";
-import axios from "axios";
+// import axios from "axios";
 
 
 import mixins from "../mixins";
 
 export default {
-    addApiBaseUrl(state, apiBaseUrl) {
-        state.commit("addApiBaseUrl", apiBaseUrl);
+    addApiBaseUrl({ commit }, apiBaseUrl) {
+        commit("addApiBaseUrl", apiBaseUrl);
     },
 
-    setThemeOption(state, themeOption) {
+    setThemeOption({ commit }, themeOption) {
         localStorage.themeOption = themeOption;
         document.body.setAttribute("color-theme", themeOption);
-        state.commit("setThemeOption", themeOption);
+        commit("setThemeOption", themeOption);
     },
 
-    async setLast7DaysCalls(state) {
+    async setLast7DaysCalls({ commit, getters }) {
 
         const days = mixins.getLastNDays(7);
 
 
-        const callLogPermission = await state.getters.getCallLogPermission;
+        const callLogPermission = await getters.getCallLogPermission;
 
         function getCallByDay(the_day) {
             return new Promise(function (resolve) {
@@ -93,31 +93,11 @@ export default {
             }
         }
 
-        state.commit("setLast7DaysCalls", data);
+        commit("setLast7DaysCalls", data);
 
         return data;
     },
 
-    /**
-     * 
-     * get user details from jwt_token decrypt from backend
-     * 
-     */
-    async setUserDetails(state) {
-        const apiBaseUrl = state.getters.apiBaseUrl;
-
-        // set loader to true
-        state.commit("setLoaderState", true);
-
-        // get data from backend through axios
-        const result = await axios.get(`${apiBaseUrl}/api/user-details`);
-
-        // set loader to false
-        state.commit("setLoaderState", false);
-
-        // add data to user details state
-        state.commit("setUserDetails", result.data);
-    },
 
     fetchContacts({ commit }) {
         const options = new ContactFindOptions();
@@ -128,12 +108,12 @@ export default {
 
         function onSuccessContact(contact_list) {
             commit("setContact", contact_list);
-            console.log(contact_list);
         }
 
         function onErrorContact(error) {
             console.log(error);
         }
+        
         navigator.contacts.find(fields, onSuccessContact, onErrorContact, options);
 
         return {};
