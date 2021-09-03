@@ -1,6 +1,31 @@
 <template>
   <base-layout page-title="Home">
     <ion-content :fullscreen="true">
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Call Duration:</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>
+                {{ last7DaysCalls.last_day_call_duration_minute }}
+                <small>Min</small>
+              </h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Total Calls:</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1>{{ last7DaysCalls.last_day_total_no_of_call_count }}</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
       <ion-card>
         <ion-card-header>
           <ion-card-title>Weekly Calls Report</ion-card-title>
@@ -21,6 +46,8 @@ import {
   IonCardHeader,
   IonCardContent,
   IonCardTitle,
+  IonCol,
+  IonRow,
 } from "@ionic/vue";
 
 export default {
@@ -31,6 +58,8 @@ export default {
     IonCardHeader,
     IonCardContent,
     IonCardTitle,
+    IonCol,
+    IonRow,
   },
   computed: {
     last7DaysCalls() {
@@ -44,12 +73,8 @@ export default {
       this.renderChart(newVal);
     },
   },
-  async created() {
-    this.$store.dispatch("setLast7DaysCalls");
-  },
   methods: {
     renderChart(chartData) {
-      console.log("chart rendered");
       const ctx = document.getElementById("planet-chart");
       new Chart(ctx, {
         type: "bar",

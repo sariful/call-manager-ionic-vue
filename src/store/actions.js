@@ -32,12 +32,12 @@ export default {
             return new Promise(function (resolve) {
                 var filters = [{
                     "name": "date",
-                    "value": moment(the_day).format('x'),
+                    "value": moment(the_day).format("x"),
                     "operator": ">="
                 },
                 {
                     "name": "date",
-                    "value": moment(the_day).add(1, 'days').format('x'),
+                    "value": moment(the_day).add(1, "days").format("x"),
                     "operator": "<="
                 }
                 ];
@@ -58,7 +58,9 @@ export default {
             actual_call_count: [],
             call_duration: [],
             total_call_duration: [],
-            all_datas: [],
+            all_data: [],
+            last_day_call_duration_minute: 0,
+            last_day_total_no_of_call_count: 0,
         };
 
 
@@ -69,7 +71,10 @@ export default {
                 var day_data = await getCallByDay(day);
                 data.labels.push(moment(day).format("dddd"));
                 data.data.push(day_data.length);
-                // data.all_datas.push(day_data);
+                data.all_data.push({
+                    date: moment(day).format("DD/MM/YY dddd"),
+                    data: day_data
+                });
 
                 var call_duration = 0;
                 var total_duration = 0;
@@ -81,10 +86,22 @@ export default {
                         if (day_data[j].duration > 0) {
                             daily_actual_call_count_total += 1;
                         }
+
+
+
                     }
+
+
                     if (total_duration > 60) {
                         var call_minute = (total_duration / 60).toFixed(0);
                         call_duration = call_minute + "." + (total_duration % 60);
+                    }
+
+
+
+                    if ((days.length - 1) == i) {
+                        data.last_day_total_no_of_call_count = daily_actual_call_count_total;
+                        data.last_day_call_duration_minute = call_duration;
                     }
                 }
                 data.actual_call_count.push(daily_actual_call_count_total);
@@ -127,12 +144,12 @@ export default {
 
             var filters = [{
                 "name": "date",
-                "value": moment(end_date).format('x'),
+                "value": moment(end_date).format("x"),
                 "operator": ">="
             },
             {
                 "name": "date",
-                "value": moment(start_date).add(1, 'days').format('x'),
+                "value": moment(start_date).add(1, "days").format("x"),
                 "operator": "<="
             }
             ];

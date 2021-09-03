@@ -25,6 +25,7 @@ export default {
   },
   async mounted() {
     this.$store.dispatch("setThemeOption", localStorage.themeOption);
+    this.$store.dispatch("setLast7DaysCalls");
     return {};
   },
   async created() {
