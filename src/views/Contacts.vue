@@ -1,17 +1,16 @@
 <template>
   <base-layout page-title="Contacts">
+    <ion-header>
+      <ion-toolbar>
+        <ion-searchbar
+          v-model="search_query"
+          show-cancel-button="focus"
+          animated
+        >
+        </ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header>
-        <ion-toolbar>
-          <ion-searchbar
-            v-model="search_query"
-            show-cancel-button="focus"
-            animated
-          >
-          </ion-searchbar>
-        </ion-toolbar>
-      </ion-header>
-
       <h2 v-if="contacts.length <= 0">Loading . . .</h2>
 
       <ion-list v-if="contacts.length > 0">
